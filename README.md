@@ -2,7 +2,7 @@
   <img src="idraulik-shield-logo.svg" alt="IdrAulik SHield" width="480">
 </p>
 
-# IdrAulik SHield
+# Idraulik Shield
 
 *Linux malware detection · powered by AI*
 
