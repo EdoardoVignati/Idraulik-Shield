@@ -1,0 +1,18 @@
+[Unit]
+Description=Idraulik Shield AI sysadmin daemon
+After=network-online.target ollama.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/idraulik/venv/bin/idraulik daemon
+Environment=IDRAULIK_CONFIG=/etc/idraulik/idraulik.toml
+EnvironmentFile=-/etc/idraulik/secrets.env
+StateDirectory=idraulik
+LogsDirectory=idraulik
+Restart=on-failure
+RestartSec=10
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

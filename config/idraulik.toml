@@ -1,0 +1,51 @@
+# Idraulik Shield configuration. Works out of the box with a local Ollama.
+
+[daemon]
+interval_seconds = 900              # AI health check every 15 min
+state_dir = "/var/lib/idraulik"
+skills_dir = "/etc/idraulik/skills"
+
+[agent]
+provider = "local"                  # primary: local Ollama
+fallback = []                       # extra fallbacks, e.g. ["claude"]
+# Remote providers whose API key is present in /etc/idraulik/secrets.env are added
+# automatically as fallbacks (claude, gemini, github, openai, openrouter). Set false to disable.
+auto_remote_fallback = true
+max_steps = 8
+
+[alerts]
+file = "/var/log/idraulik/alerts.log"   # one line per alert: <time> INFO|WARN|CRIT [source] message
+
+[monitors]
+enabled = ["ports", "wifi", "lan", "bluetooth", "files"]
+interval_seconds = 60               # how often monitors run (deterministic, no AI cost)
+bluetooth_scan_seconds = 5          # 0 = do not actively scan
+# watch_paths = [...]               # replaces the default list of critical files/dirs (/etc/passwd, /etc/ssh, ...)
+extra_watch_paths = []              # e.g. ["/var/www", "/opt/myapp/.env"]
+
+[policy]
+# required = write actions (restart_service, run_command) are queued: `idraulik approvals approve <id>`
+# auto     = write actions run immediately (denylist still applies)
+approval = "required"
+command_denylist = []               # extra regexes blocked in run_command
+
+# --- Providers ---------------------------------------------------------------
+[providers.local]
+type = "ollama"
+base_url = "http://127.0.0.1:11434"
+model = "qwen2.5:7b"                # must support tool calling
+
+# Remote providers need only the key in secrets.env. Override model/base_url here if you want:
+# [providers.claude]
+# model = "claude-sonnet-4-5"       # key: ANTHROPIC_API_KEY
+# [providers.gemini]
+# model = "gemini-2.5-flash"        # key: GEMINI_API_KEY
+# [providers.github]                # GitHub Models, key: GITHUB_TOKEN (needs models scope)
+# model = "openai/gpt-4.1-mini"
+#
+# Any other OpenAI-compatible service:
+# [providers.custom]
+# type = "openai"
+# base_url = "https://example.com/v1"
+# model = "some-model"
+# api_key_env = "CUSTOM_API_KEY"
