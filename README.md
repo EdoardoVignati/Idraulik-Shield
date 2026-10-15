@@ -6,7 +6,7 @@
 
 *Linux malware detection · powered by AI*
 
-IdrAulik SHield is a plug-and-play daemon for Debian-based Linux servers. Once installed it watches the
+Idraulik Shield is a plug-and-play daemon for Debian-based Linux servers. Once installed it watches the
 whole machine (open ports, Wi-Fi, Bluetooth, local network, critical files, services and logs) with
 lightweight monitors, writes alerts to a log file, and uses AI agents to triage them. By default it runs
 on a local [Ollama](https://ollama.com) model; optionally you can plug in Claude, Gemini, GitHub Models,
